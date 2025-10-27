@@ -1,0 +1,148 @@
+
+SQL Joins: Combining Table Data
+Fixing `df.corr()` String Conversion Error
+SQL Data Analysis Plan and Examples
+SQL for Data Analysis Examples
+Popular SQL Databases Explained
+SQL Data Analysis Queries and Concepts
+Fixing Python Function Definition Syntax
+Logistic Regression Binary Classifier
+Power BI Dashboard Design & Summary
+Linear Regression: Simple vs. Multiple
+Data Cleaning and EDA for ML
+E-commerce Database: Data Manipulation Examples
+Data Cleaning and Preparation for ML
+Netflix Dataset Cleaning and Preparation
+Conversation with Gemini
+Customers
+
+customer_idfirst_namelast_nameagecountry1JohnDoe31USA2RobertLuna22USA3DavidRobinson22UK4JohnReinhardt25UK5BettyDoe28UAE
+
+Orders
+
+order_iditemamountcustomer_id1Keyboard40042Mouse30043Monitor1200034Keyboard40015Mousepad2502
+
+Shippings
+
+shipping_idstatuscustomer1Pending22Pending43Delivered34Pending55Delivered1,Objective: Learn to combine data from multiple tables,1.Create two related tables (e.g., Customers, Orders)
+
+2.Use INNER, LEFT, RIGHT, FULL JOIN
+
+Outcome: Mastery of merging data,Key Concepts: Joins, Relationships
+
+Based on the tables you provided, here are examples illustrating the use of INNER, LEFT, RIGHT, and FULL JOIN operations.
+
+The tables are:
+
+Customers
+customer_id
+1
+2
+3
+4
+5
+Orders
+order_id
+1
+2
+3
+4
+5
+Shippings
+shipping_id
+1
+2
+3
+4
+5
+The common column linking Customers and Orders (and Shippings) is customer_id.
+
+1. INNER JOIN
+The INNER JOIN returns only the rows that have matching values in both tables.
+
+Objective: Find all customers who have placed an order and list the details of that order.
+
+SQL Concept:
+
+SQL
+SELECT
+  C.first_name,
+  C.last_name,
+  O.item,
+  O.amount
+FROM Customers C
+INNER JOIN Orders O
+  ON C.customer_id = O.customer_id;
+Result: All customers have a matching order, so all rows are present. | first_name | last_name | item | amount | |:---:|:---:|:---:|:---:| | John | Reinhardt | Keyboard | 400 | | John | Reinhardt | Mouse | 300 | | David | Robinson | Monitor | 12000 | | John | Doe | Keyboard | 400 | | Robert | Luna | Mousepad | 250 |
+
+2. LEFT JOIN (or LEFT OUTER JOIN)
+The LEFT JOIN returns all rows from the left table (Customers), and the matched rows from the right table (Orders). If there is no match in the right table, NULL is used for the right table's columns.
+
+Objective: List all customers and any orders they may have placed. If a customer hasn't placed an order, their order details will be NULL.
+
+SQL Concept:
+
+SQL
+SELECT
+  C.first_name,
+  C.last_name,
+  O.order_id,
+  O.item
+FROM Customers C
+LEFT JOIN Orders O
+  ON C.customer_id = O.customer_id;
+Result: All 5 customers are listed. Customers 1 and 4 appear twice because they have two orders each. | first_name | last_name | order_id | item | |:---:|:---:|:---:|:---:| | John | Doe | 4 | Keyboard | | Robert | Luna | 5 | Mousepad | | David | Robinson | 3 | Monitor | | John | Reinhardt | 1 | Keyboard | | John | Reinhardt | 2 | Mouse | | Betty | Doe | NULL | NULL | Customer 5 (Betty Doe) has no order, so the order columns are NULL.
+
+3. RIGHT JOIN (or RIGHT OUTER JOIN)
+The RIGHT JOIN returns all rows from the right table (Orders), and the matched rows from the left table (Customers). If there is no match in the left table, NULL is used for the left table's columns.
+
+Objective: List all orders and the customer who placed them. (This is often less common than a LEFT JOIN when joining Customers to Orders because orders must have a customer).
+
+SQL Concept:
+
+SQL
+SELECT
+  C.first_name,
+  C.last_name,
+  O.item,
+  O.amount
+FROM Customers C
+RIGHT JOIN Orders O
+  ON C.customer_id = O.customer_id;
+Result: Since every order has a valid customer_id, this result is the same as the INNER JOIN. If there were an order with an invalid/missing customer_id, the customer fields would be NULL. | first_name | last_name | item | amount | |:---:|:---:|:---:|:---:| | John | Reinhardt | Keyboard | 400 | | John | Reinhardt | Mouse | 300 | | David | Robinson | Monitor | 12000 | | John | Doe | Keyboard | 400 | | Robert | Luna | Mousepad | 250 |
+
+4. FULL JOIN (or FULL OUTER JOIN)
+The FULL JOIN returns all rows when there is a match in one of the tables. It returns rows that are present in the left table or the right table.
+
+Objective: List all customers and all orders. If a customer has no order, the order details are NULL. If an order has no matching customer (hypothetically), the customer details are NULL.
+
+SQL Concept:
+
+SQL
+SELECT
+  C.first_name,
+  C.last_name,
+  O.order_id,
+  O.item
+FROM Customers C
+FULL JOIN Orders O
+  ON C.customer_id = O.customer_id;
+Result: All customers and all orders are included. This result is the same as the LEFT JOIN in this specific data set because:
+
+All customers are listed (from the Customers table).
+
+The one customer with no order (Betty Doe) shows NULL for order details.
+
+All orders match an existing customer.
+
+first_name	last_name	order_id	item
+John	Doe	4	Keyboard
+Robert	Luna	5	Mousepad
+David	Robinson	3	Monitor
+John	Reinhardt	1	Keyboard
+John	Reinhardt	2	Mouse
+Betty	Doe	NULL	NULL
+
+
+
+
